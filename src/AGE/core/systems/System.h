@@ -41,11 +41,11 @@ private:
         int input;
     };
 
-    struct DeltaTime final{
+    struct DeltaTime final {
         inline void setDt(float td){
             dt = td;
         }
-        const float operator()(){
+        float operator()() const {
             return dt;
         }
     private:

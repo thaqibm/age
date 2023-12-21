@@ -7,14 +7,10 @@
 
 namespace AGE{
     /*
-    * frameRate 2 (2 ticks / second).
+    * frameRate 30 (30 ticks / second).
     */
-    constexpr const int frameRate = 2; 
-    /*
-    * modTicks: keep track of ticks in mod 10^9 seconds.
-    * Mainly to prevent size overflow
-    */ 
-    constexpr const size_t modTicks = 1e9;  
+    constexpr const int frameRate = 30; 
+
 
 template<template<class...> class Seq, typename P, typename... Rest>
 class Seq2DRender{
@@ -34,7 +30,7 @@ class Seq2DRender{
         Seq2DRender(int row, int col, size_t ticks): state(row, Line(col)), ticks{ticks} {
         }
         virtual void render() = 0;
-        virtual void runLoop(std::function<State(State&, int)> f, int exitCode) = 0;
+        virtual void runLoop(std::function<State&(State&, int)> f, int exitCode) = 0;
         void setState(const State& state2)
         {
             state = state2;
@@ -80,8 +76,8 @@ class CursesRender : public Seq2DRender<std::vector, char>{
             DW->draw_vect(getState());
         }
 
-        void runLoop(std::function<State(State&, int)> f, int exitkey = 'q'){
-            DW->repl([this, &f](int ch)->void{
+        void runLoop(std::function<State&(State&, int)> f, int exitkey = 'q') override {
+            DW->repl([this, &f](int ch)->void {
                 this->setState(f(this->getState(), ch));
                 this->render();
             }, ticks, exitkey);

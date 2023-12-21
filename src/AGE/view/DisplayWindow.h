@@ -1,13 +1,13 @@
 #ifndef AGE_INIT_H
 #define AGE_INIT_H
 
-#include<ncurses.h>
+#include <ncurses.h>
 #include <functional>
 #include <map>
 #include <utility>
 #include <vector>
 #include <string>
-#include<unistd.h>
+#include <unistd.h>
 
 
 namespace AGE{

@@ -205,7 +205,7 @@ int main(int argc, char** argv)
 
 
     GAME1.createEntityFromPrefab(ex_prefab, "keeper");
-    auto eg = GAME1.createEntityFromPrefab(goal_post, "goal");
+    auto _et = GAME1.createEntityFromPrefab(goal_post, "goal");
 
 
     GAME1.attachComponent<Score>(GAME1.createEntity("score"), {0});
@@ -227,7 +227,7 @@ int main(int argc, char** argv)
     //auto dw = make_shared<AGE::CursesWindow>("AGE Engine v1.0 (0 to exit)");
     //G<vector, char>  g{make_unique<AGE::CursesRender>(25,80, fps, dw)};
 
-    GameController<vector, char> g{make_unique<AGE::CursesRender>(25, 80, fps,make_shared<AGE::CursesWindow>("AGE Engine v1.0 (0 to Exit"))} ;
+    GameController<vector, char> g{make_unique<AGE::CursesRender>(25, 80, fps,make_shared<AGE::CursesWindow>("AGE Engine v1.0 (q to Exit"))} ;
 
     g.run(GAME1, fps, '0');
     return 0;

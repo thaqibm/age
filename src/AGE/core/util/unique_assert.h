@@ -17,7 +17,7 @@ template <typename...>
 inline constexpr auto is_unique = std::true_type{};
 
 template <typename T, typename... Rest>
-inline constexpr auto is_unique<T, Rest...> = std::__bool_constant<
+inline constexpr auto is_unique<T, Rest...> = std::bool_constant<
                                               (!std::is_same<T, Rest>::value && ...) && is_unique<Rest...>
                                                                                         >{};
 #endif //A4_UNIQUE_ASSERT_H

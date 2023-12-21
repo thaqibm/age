@@ -16,11 +16,11 @@ class GameController{
 
 public:
     GameController(rendererType r) : W{std::move(r)} {}
-    void run(AGEManager& mgr, size_t fps = 2, int exitCode = '0'){
+    void run(AGEManager& mgr, size_t fps = 2, int exitCode = 'q'){
         W->setState(mgr.getState());
         W->render();
         using State = std::vector<std::vector<char>>;
-        W->runLoop([&mgr, &fps](State& s, int ch) -> State{
+        W->runLoop([&mgr, &fps](State& s, int ch) -> State& {
             mgr.update(1/(fps+0.0f), ch);
             s = mgr.getState();
             return s;

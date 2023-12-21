@@ -1,0 +1,162 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++2a",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-c",
+      "-o",
+      "src/GameController.o",
+      "src/GameController.cpp"
+    ],
+    "directory": "/Users/fennelintern/age",
+    "file": "/Users/fennelintern/age/src/GameController.cpp",
+    "output": "/Users/fennelintern/age/src/GameController.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++2a",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-c",
+      "-o",
+      "src/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/Users/fennelintern/age",
+    "file": "/Users/fennelintern/age/src/main.cpp",
+    "output": "/Users/fennelintern/age/src/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++2a",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-c",
+      "-o",
+      "src/main2.o",
+      "src/main2.cpp"
+    ],
+    "directory": "/Users/fennelintern/age",
+    "file": "/Users/fennelintern/age/src/main2.cpp",
+    "output": "/Users/fennelintern/age/src/main2.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++2a",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-c",
+      "-o",
+      "src/AGE/core/AGEManager.o",
+      "src/AGE/core/AGEManager.cpp"
+    ],
+    "directory": "/Users/fennelintern/age",
+    "file": "/Users/fennelintern/age/src/AGE/core/AGEManager.cpp",
+    "output": "/Users/fennelintern/age/src/AGE/core/AGEManager.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++2a",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-c",
+      "-o",
+      "src/AGE/core/ColliderSystem.o",
+      "src/AGE/core/ColliderSystem.cpp"
+    ],
+    "directory": "/Users/fennelintern/age",
+    "file": "/Users/fennelintern/age/src/AGE/core/ColliderSystem.cpp",
+    "output": "/Users/fennelintern/age/src/AGE/core/ColliderSystem.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++2a",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-c",
+      "-o",
+      "src/AGE/core/RenderSystem.o",
+      "src/AGE/core/RenderSystem.cpp"
+    ],
+    "directory": "/Users/fennelintern/age",
+    "file": "/Users/fennelintern/age/src/AGE/core/RenderSystem.cpp",
+    "output": "/Users/fennelintern/age/src/AGE/core/RenderSystem.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++2a",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-c",
+      "-o",
+      "src/AGE/core/components/componentDataArray.o",
+      "src/AGE/core/components/componentDataArray.cpp"
+    ],
+    "directory": "/Users/fennelintern/age",
+    "file": "/Users/fennelintern/age/src/AGE/core/components/componentDataArray.cpp",
+    "output": "/Users/fennelintern/age/src/AGE/core/components/componentDataArray.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++2a",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-c",
+      "-o",
+      "src/AGE/core/components/componentManager.o",
+      "src/AGE/core/components/componentManager.cpp"
+    ],
+    "directory": "/Users/fennelintern/age",
+    "file": "/Users/fennelintern/age/src/AGE/core/components/componentManager.cpp",
+    "output": "/Users/fennelintern/age/src/AGE/core/components/componentManager.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++2a",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-c",
+      "-o",
+      "src/AGE/core/systems/SystemManager.o",
+      "src/AGE/core/systems/SystemManager.cpp"
+    ],
+    "directory": "/Users/fennelintern/age",
+    "file": "/Users/fennelintern/age/src/AGE/core/systems/SystemManager.cpp",
+    "output": "/Users/fennelintern/age/src/AGE/core/systems/SystemManager.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++2a",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-c",
+      "-o",
+      "src/AGE/core/systems/default/colliderPhysics.o",
+      "src/AGE/core/systems/default/colliderPhysics.cpp"
+    ],
+    "directory": "/Users/fennelintern/age",
+    "file": "/Users/fennelintern/age/src/AGE/core/systems/default/colliderPhysics.cpp",
+    "output": "/Users/fennelintern/age/src/AGE/core/systems/default/colliderPhysics.o"
+  }
+]

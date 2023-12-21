@@ -33,3 +33,8 @@
 *.out
 *.app
 output/
+
+# IDEs
+.cache/
+.idea/
+
