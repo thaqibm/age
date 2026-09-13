@@ -1,0 +1,53 @@
+name: Browser demo
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Emscripten 4.0.14
+        run: |
+          git clone --depth 1 https://github.com/emscripten-core/emsdk.git "$RUNNER_TEMP/emsdk"
+          "$RUNNER_TEMP/emsdk/emsdk" install 4.0.14
+          "$RUNNER_TEMP/emsdk/emsdk" activate 4.0.14
+      - name: Build browser demo
+        run: |
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          ./scripts/build-web.sh
+      - name: Test storage and games with sanitizers
+        run: |
+          clang++ -std=c++20 -O1 -g -fsanitize=address,undefined tests/core.cpp -o /tmp/age-core
+          /tmp/age-core
+          clang++ -std=c++20 -O1 -g -fsanitize=address,undefined tests/games.cpp -o /tmp/age-games
+          /tmp/age-games
+          node tests/wasm.mjs
+          node --check web/app.js
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

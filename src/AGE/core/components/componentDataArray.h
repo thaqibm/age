@@ -25,6 +25,7 @@ public:
      * attaches component of Type T to entity with id entityId
      */
     void attachComponent(EntityID entityId, T component) {
+        assert(!entityExists(entityId) && "Component already attached");
         assert(n < MAX_ENTT && "Maximum number of entities reached");
         entityMap[entityId] = n;
         idxMap[n] = entityId;
@@ -39,7 +40,7 @@ public:
         // idea from:
         // https://austinmorlan.com/posts/entity_component_system/
 
-        auto idx = idxMap[entityId];
+        auto idx = entityMap.at(entityId);
         auto lst = n-1;
         entityData[idx] = entityData[lst];
 
@@ -52,8 +53,13 @@ public:
         --n;
     }
 
+    // Dense iteration avoids a hash lookup per entity in hot systems.
+    size_t size() const { return n; }
+    T* data() { return entityData.data(); }
+    EntityID entityAt(size_t index) const { return idxMap.at(index); }
+
     T& getData(EntityID id){
-        assert(( "Entity Not found", entityExists(id)));
+        assert(entityExists(id) && "Entity not found");
         return entityData[entityMap[id]];
     }
     void DestroyEntity(EntityID entityId) override {
@@ -70,7 +76,7 @@ private:
     std::array<T, MAX_ENTT> entityData;
     std::unordered_map<EntityID, size_t> entityMap;
     std::unordered_map<size_t, EntityID> idxMap;
-    size_t n; // current number of entities
+    size_t n{}; // current number of entities
     inline bool entityExists(EntityID id){
         return entityMap.find(id) != entityMap.end();
     }

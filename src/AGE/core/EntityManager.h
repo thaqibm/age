@@ -40,6 +40,7 @@ public:
         return Entities;
     }
     EntityID CreateEntity(){
+        assert(!Available_Entities.empty() && "Entity capacity exhausted");
         EntityID id = Available_Entities.front();
         current_Entt[id].signature.reset();
         current_Entt[id].isAlive = true;
@@ -59,6 +60,7 @@ public:
     }
 
     void DestroyEntity(EntityID id){
+        assert(id < MAX_ENTT && current_Entt[id].isAlive);
         current_Entt[id].signature.reset();
         current_Entt[id].isAlive = false;
         Entities.erase(id);

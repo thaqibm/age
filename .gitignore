@@ -38,3 +38,4 @@ output/
 .cache/
 .idea/
 
+web/dist/
