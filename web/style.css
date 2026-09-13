@@ -277,3 +277,23 @@ h2 {
     gap: 10px;
   }
 }
+
+.terminal-card {
+  min-width: 0;
+}
+.game-source {
+  display: block;
+  width: fit-content;
+  margin: 6px 0 0 auto;
+  font:
+    300 11px/1.6 "Albert Sans",
+    Arial,
+    sans-serif;
+}
+#game-source {
+  align-self: center;
+  font:
+    300 13px/1.6 "Albert Sans",
+    Arial,
+    sans-serif;
+}

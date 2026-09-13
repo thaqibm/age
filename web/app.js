@@ -3,21 +3,25 @@ const $ = (id) => document.getElementById(id);
 const definitions = [
   {
     name: "Swarm",
+    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L100",
     mode: 0,
     hint: "WASD / arrows / drag to move · Space to pulse · P to pause · Esc to close",
   },
   {
     name: "Breakout",
+    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L220",
     mode: 1,
     hint: "← → / A D / drag to move · P to pause · Esc to close",
   },
   {
     name: "Orbit",
+    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L334",
     mode: 3,
     hint: "Drag to move the gravity center · P to pause · Esc to close",
   },
   {
     name: "Flow",
+    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L341",
     mode: 4,
     hint: "Drag to attract particles · P to pause · Esc to close",
   },
@@ -92,6 +96,8 @@ function open(scene) {
   if (scene.failed || active) return;
   active = scene;
   $("name").textContent = scene.name;
+  $("game-source").href = scene.source;
+  $("game-source").setAttribute("aria-label", `${scene.name} source code`);
   $("hint").textContent = scene.hint;
   $("regular").textContent = scene.mode >= 3 ? "Run" : "Play";
   $("stress").hidden = scene.mode === 1;
@@ -316,7 +322,17 @@ async function init() {
       canvas.setAttribute("aria-label", definition.name);
       preview.append(canvas);
       button.append(bar, preview);
-      $("gallery").append(button);
+      const card = document.createElement("article");
+      card.className = "terminal-card";
+      const source = document.createElement("a");
+      source.className = "game-source";
+      source.href = definition.source;
+      source.textContent = "source";
+      source.target = "_blank";
+      source.rel = "noopener";
+      source.setAttribute("aria-label", `${definition.name} source code`);
+      card.append(button, source);
+      $("gallery").append(card);
       try {
         const engine = await createAGE({ wasmBinary });
         const scene = {

@@ -1,7 +1,58 @@
-# AGE Engine
+# AGE: Ascii game engine
 
 A C++ entity-component engine, originally built for terminal games.
 [Original design document](readme/readme.pdf).
+
+## Setup
+
+[Play the browser demo](https://thaqibm.github.io/age/) or build it locally.
+
+### Browser version (macOS / Linux)
+
+You need **Git, Bash, and Python 3.10 or newer**. On macOS, install the Xcode
+Command Line Tools (`xcode-select --install`) if Git is not available. Windows
+users can follow these commands inside WSL.
+
+Clone the project and install the pinned Emscripten toolchain in a sibling folder:
+
+```sh
+git clone https://github.com/thaqibm/age.git
+git clone https://github.com/emscripten-core/emsdk.git
+cd emsdk
+python3 emsdk.py install 4.0.14
+python3 emsdk.py activate 4.0.14
+source ./emsdk_env.sh
+cd ../age
+./scripts/build-web.sh
+python3 -m http.server 8770 --bind 127.0.0.1 --directory web/dist
+```
+
+Open **http://127.0.0.1:8770/** in a browser with WebAssembly and WebGL 2 enabled.
+The server stays running until you press Ctrl+C. No npm install is required;
+Emscripten provides the C++ compiler and Node runtime.
+
+For later sessions, from the `age` directory:
+
+```sh
+source ../emsdk/emsdk_env.sh
+./scripts/build-web.sh
+python3 -m http.server 8770 --bind 127.0.0.1 --directory web/dist
+```
+
+Rebuild after editing files in `web/`, then refresh the browser. The generated
+site is in `web/dist/`. Serve it over HTTP rather than opening `index.html`
+directly. If `em++` is missing, source `emsdk_env.sh` again. If the port is busy,
+use another port in the server command and browser URL. `EMXX` can override the
+compiler path.
+
+### Where the code lives
+
+- [Swarm](web/game.cpp#L100) and [Breakout](web/game.cpp#L220): gameplay and collisions.
+- [Orbit](web/game.cpp#L334) and [Flow](web/game.cpp#L341): simulation updates.
+- [web/app.js](web/app.js): previews, fullscreen controls, input, and FPS display.
+- [web/renderer.js](web/renderer.js): instanced WebGL renderer.
+- [src/AGE/core](src/AGE/core): shared C++ entity and component storage.
+- [scripts/build-web.sh](scripts/build-web.sh): C++ to WebAssembly build.
 
 ## Browser demo
 
@@ -21,7 +72,7 @@ Games and simulations use AGE's `EntityManager` and `componentDataArray<T>` core
 - **Swarm stress test** — starts with 2,000 enemies, adds more over time, and
   makes the ship invulnerable. Total entity capacity is 5,000.
 
-Use WASD / arrows or touch and drag. Space activates Swarm's pulse. P / Escape
+Use WASD / arrows or touch and drag. Space activates Swarm's pulse. P
 pauses; R restarts; Escape closes the expanded view. The page also provides buttons. Losing focus pauses the game.
 
 ### Architecture and performance
@@ -38,7 +89,8 @@ or original collision system. Those native implementations and games remain.
 - Uniform 40-unit spatial grid for bullet/enemy collision candidates.
 - Fixed-capacity output buffer exposed as a WASM memory view; no per-entity JS calls.
 - One instanced WebGL 2 draw for ships, enemies, bullets, bricks, and particles.
-- No runtime JS dependencies, downloaded assets, server, worker, or special headers.
+- No runtime JS dependencies, backend, worker, or special headers. The font and icon
+  are bundled with the static site.
 - 16 MiB fixed WASM linear memory per world (64 MiB for four previews). Device pixel ratio capped at two.
 
 The component core fixes an incorrect entity-ID/index lookup during swap removal,
@@ -48,21 +100,6 @@ tests cover non-contiguous IDs, removal, refill, and entity ID recycling.
 The page measures FPS, active entities, simulation CPU time per frame, and draw
 submission CPU time per frame. Draw submission is **not GPU completion time**.
 The stress test is an illustrative game workload, not a comparative ECS benchmark.
-
-### Build and run
-
-Install [Emscripten](https://emscripten.org/docs/getting_started/downloads.html),
-version **4.0.14**, and activate its environment:
-
-```sh
-source /path/to/emsdk/emsdk_env.sh
-./scripts/build-web.sh
-python3 -m http.server 8770 --bind 127.0.0.1 --directory web/dist
-```
-
-Open <http://127.0.0.1:8770>. Serve over HTTP; opening the HTML as a local file
-cannot load the WASM module. Requires WebAssembly and WebGL 2. JavaScript handles
-input and rendering; C++ handles gameplay. `EMXX` can override the compiler path.
 
 ### Validate
 
@@ -88,7 +125,11 @@ All asset URLs are relative, so the output works under `/age/`.
 
 ## Original terminal games
 
-The existing Makefile builds `output/main` and `output/main2` with C++20 and curses:
+Install a C++20 compiler, Make, and curses development headers first. On macOS,
+the Xcode Command Line Tools provide them. On Debian/Ubuntu, install
+`build-essential` and `libncurses-dev`.
+
+From the repository root, the existing Makefile builds `output/main` and `output/main2` with C++20 and curses:
 
 ```sh
 make
