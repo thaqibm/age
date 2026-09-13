@@ -6,11 +6,7 @@
     <title>AGE</title>
     <meta
       name="description"
-      content="Two playable C++ games powered by AGE's entity-component core, compiled to WebAssembly."
-    />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23398eae' d='M16 2L30 29 16 23 2 29z'/%3E%3C/svg%3E"
+      content="Small games and simulations. C++ / WebAssembly."
     />
     <link rel="stylesheet" href="./style.css" />
     <script type="module" src="./app.js"></script>
@@ -24,53 +20,37 @@
           ><a href="https://github.com/thaqibm/age">Source</a>
         </nav>
       </header>
-      <div class="controls" aria-label="Game controls">
-        <button data-mode="0" aria-pressed="true" disabled>Swarm</button>
-        <button data-mode="1" aria-pressed="false" disabled>Breakout</button>
-        <button id="stress" disabled>Stress test</button>
-        <span class="spacer"></span>
-        <button id="pause" disabled>Pause</button>
-        <button id="restart" disabled>Restart</button>
-        <button id="pulse" disabled>Pulse</button>
-      </div>
-      <p id="hint">
-        WASD / arrows / drag to move · Space to pulse · P to pause · R to
-        restart
-      </p>
-      <div class="stage">
-        <canvas
-          id="game"
-          width="960"
-          height="600"
-          tabindex="0"
-          aria-label="Game. Use WASD or arrow keys to move; Space activates a pulse in Swarm. Touch and drag to steer."
-        ></canvas>
-        <div class="hud">
-          <span id="score">SCORE 00000</span
-          ><span id="lives">HULL ● ● ● ● ●</span><span id="time">90s</span>
-        </div>
-        <div id="overlay">
-          <h2 id="title">Swarm</h2>
-          <p id="intro">Survive 90 seconds. Auto-fire.</p>
-          <button id="start" disabled>Loading…</button>
-        </div>
-        <div class="bottom-hud">
-          <span id="wave">WAVE 01</span
-          ><span id="pulse-status">PULSE READY</span>
-        </div>
-      </div>
-      <div class="metrics" aria-label="Live performance">
-        <span><span id="fps">—</span> fps</span>
-        <span><span id="entities">—</span> entities</span>
-        <span title="Simulation CPU time per frame"
-          ><span id="sim">—</span> ms sim</span
-        >
-        <span title="CPU draw submission time per frame, not GPU completion"
-          ><span id="render">—</span> ms draw</span
-        >
-      </div>
-      <p class="note">Browser demo · C++ / WebAssembly</p>
-      <p id="status" class="sr-only" role="status">Loading…</p>
+      <div
+        id="gallery"
+        class="gallery"
+        aria-label="Live games and simulations"
+      ></div>
+      <p class="note" id="status" role="status">Loading…</p>
     </main>
+    <dialog id="viewer" aria-labelledby="name">
+      <div class="viewer-bar">
+        <h2 id="name"></h2>
+        <div class="controls">
+          <button id="regular" aria-pressed="true">Play</button>
+          <button id="stress" aria-pressed="false">Stress</button>
+          <button id="fps-toggle" aria-pressed="false">FPS</button>
+          <button id="pause">Pause</button>
+          <button id="restart">Restart</button>
+          <button id="pulse">Pulse</button>
+          <button id="close" aria-label="Close expanded view">Close ×</button>
+        </div>
+      </div>
+      <div class="viewport">
+        <div id="stage" class="stage">
+          <div id="hud" class="hud"></div>
+          <div id="metrics" class="metrics" hidden></div>
+          <div id="result" class="result" hidden>
+            <p id="result-text"></p>
+            <button id="again">Play again</button>
+          </div>
+        </div>
+      </div>
+      <p id="hint" class="note"></p>
+    </dialog>
   </body>
 </html>

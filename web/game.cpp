@@ -286,14 +286,26 @@ extern "C" {
 API void game_init(int selected, unsigned seed) {
   entities = std::make_unique<EntityManager>();
   bodies = std::make_unique<componentDataArray<Body>>();
-  mode = std::clamp(selected, 0, 2);
+  mode = std::clamp(selected, 0, 6);
+  bool dense = mode >= 5;
+  if (dense)
+    mode -= 2;
   rng = seed ? seed : 1;
   score = kills = state = brickCount = 0;
   wave = 1;
   health = mode == 1 ? 3 : 5;
   elapsed = spawnTimer = shootTimer = immunity = pulseCooldown = 0;
   serve = 1;
-  if (mode == 1) {
+  if (mode >= 3) {
+    for (int i = 0; i < (dense ? 4500 : 600); ++i) {
+      float a = random01() * 2 * PI, radius = 40 + random01() * 230;
+      float speed = std::sqrt(180000.f / radius);
+      float x = mode == 3 ? W / 2 + std::cos(a) * radius : random01() * W;
+      float y = mode == 3 ? H / 2 + std::sin(a) * radius : random01() * H;
+      add({x, y, -std::sin(a) * speed, std::cos(a) * speed, 2, 2, 1, .35f + random01() * .25f,
+           .65f + random01() * .3f, 1, 0, Bullet});
+    }
+  } else if (mode == 1) {
     player = add({W / 2, H - 40, 0, 0, 52, 9, 1, .4f, .9f, 1, 0, Paddle});
     ball = add({W / 2, H - 64, 150, -310, 7, 7, 1, 1, 1, .9f, 0, Ball});
     for (int y = 0; y < 6; y++)
@@ -314,7 +326,38 @@ API void game_step(float dt, float mx, float my, float px, float py, int pointer
     return;
   dt = std::clamp(dt, 0.f, 1.f / 60);
   elapsed += dt;
-  if (mode == 1)
+  if (mode >= 3) {
+    float centerX = pointer ? std::clamp(px, 100.f, W - 100) : W / 2;
+    float centerY = pointer ? std::clamp(py, 100.f, H - 100) : H / 2;
+    for (size_t i = 0; i < bodies->size(); ++i) {
+      auto &b = bodies->data()[i];
+      if (mode == 3) {
+        // Softened central gravity; semi-implicit Euler at 120 Hz.
+        float dx = centerX - b.x, dy = centerY - b.y;
+        float d2 = dx * dx + dy * dy + 400;
+        float force = 180000.f / (d2 * std::sqrt(d2));
+        b.vx += dx * force * dt;
+        b.vy += dy * force * dt;
+      } else {
+        float a =
+            std::sin(b.x * .009f + elapsed * .18f) * 2 + std::cos(b.y * .012f - elapsed * .13f) * 2;
+        b.vx = std::cos(a) * 65;
+        b.vy = std::sin(a) * 65;
+        if (pointer) {
+          float dx = centerX - b.x, dy = centerY - b.y;
+          float d = std::max(30.f, length(dx, dy));
+          b.vx += dx / d * 60;
+          b.vy += dy / d * 60;
+        }
+      }
+      b.x += b.vx * dt;
+      b.y += b.vy * dt;
+      if (mode == 4) {
+        b.x = std::fmod(b.x + W, W);
+        b.y = std::fmod(b.y + H, H);
+      }
+    }
+  } else if (mode == 1)
     breakout(dt, mx, px, pointer);
   else
     swarm(dt, mx, my, px, py, pointer, pulse);

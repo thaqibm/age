@@ -53,4 +53,25 @@ assert(stress[5] > 1000);
 m._game_init(0, 42);
 assert.equal(stats()[0], 0);
 assert.equal(stats()[1], 5);
+for (const mode of [3, 4, 5, 6]) {
+  const result = run(mode, 3600);
+  assert.equal(result[5], mode >= 5 ? 4500 : 600);
+  assert.equal(result[4], 0);
+  const offset = m._game_vertices() / 4;
+  const before = Array.from(m.HEAPF32.subarray(offset, offset + 2));
+  for (let i = 0; i < 120; i++) m._game_step(1 / 120, 0, 0, 300, 200, 1, 0);
+  const after = Array.from(m.HEAPF32.subarray(offset, offset + 2));
+  assert.notDeepEqual(before, after, "Simulation particles must move");
+  assert(
+    m.HEAPF32.subarray(offset, offset + m._game_count() * 11).every(
+      Number.isFinite,
+    ),
+  );
+}
+// Each miniature uses an isolated WASM world.
+const other = await createAGE();
+other._game_init(1, 42);
+m._game_init(3, 42);
+assert.equal(other._game_count(), 74);
+assert.equal(m._game_count(), 600);
 console.log("WASM simulation tests pass");

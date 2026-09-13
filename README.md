@@ -5,17 +5,24 @@ A C++ entity-component engine, originally built for terminal games.
 
 ## Browser demo
 
-Two new games use AGE's `EntityManager` and `componentDataArray<T>` core:
+Live miniature terminals open into a fullscreen game or simulation. Click any preview;
+the expanded view has small Play/Run, Stress, FPS, Pause, and Close controls.
+Native fullscreen is used when supported, with a viewport-filling dialog fallback.
+
+Games and simulations use AGE's `EntityManager` and `componentDataArray<T>` core:
 
 - **Swarm** — survive 90 seconds, with automatic targeting, increasing waves,
   a three-shot upgrade at wave four, and a pulse that recharges every five seconds.
 - **Breakout** — clear 72 bricks with three balls; paddle impact position controls
   the bounce angle and each return increases speed.
+- **Orbit** — 600 particles under softened central gravity; drag to move the center.
+- **Flow** — 600 particles following a time-varying vector field; drag to attract them.
+  Both simulations offer a 4,500-particle stress mode.
 - **Swarm stress test** — starts with 2,000 enemies, adds more over time, and
   makes the ship invulnerable. Total entity capacity is 5,000.
 
 Use WASD / arrows or touch and drag. Space activates Swarm's pulse. P / Escape
-pauses; R restarts. The page also provides buttons. Losing focus pauses the game.
+pauses; R restarts; Escape closes the expanded view. The page also provides buttons. Losing focus pauses the game.
 
 ### Architecture and performance
 
@@ -24,13 +31,15 @@ entity allocator and packed component storage, with new game-specific simulation
 systems. It does **not** port the old terminal renderer, `AGEManager` update loop,
 or original collision system. Those native implementations and games remain.
 
+- Four independent WASM worlds share the downloaded binary. Previews run at 30 FPS
+  (5 FPS with reduced motion), pause offscreen, and stop while a scene is expanded.
 - Fixed 120 Hz simulation with bounded catch-up after slow frames.
 - Dense component iteration for movement and render extraction.
 - Uniform 40-unit spatial grid for bullet/enemy collision candidates.
 - Fixed-capacity output buffer exposed as a WASM memory view; no per-entity JS calls.
 - One instanced WebGL 2 draw for ships, enemies, bullets, bricks, and particles.
 - No runtime JS dependencies, downloaded assets, server, worker, or special headers.
-- 16 MiB fixed WASM linear memory. Device pixel ratio capped at two.
+- 16 MiB fixed WASM linear memory per world (64 MiB for four previews). Device pixel ratio capped at two.
 
 The component core fixes an incorrect entity-ID/index lookup during swap removal,
 initializes its size for stack construction, and exposes dense iteration. Regression

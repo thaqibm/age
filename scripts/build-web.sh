@@ -7,4 +7,4 @@ mkdir -p web/dist
   -sINITIAL_MEMORY=16777216 -sALLOW_MEMORY_GROWTH=0 \
   -sEXPORTED_RUNTIME_METHODS=HEAPF32 \
   -o web/dist/age.js
-cp web/index.html web/style.css web/app.js web/dist/
+cp web/index.html web/style.css web/app.js web/renderer.js web/dist/
