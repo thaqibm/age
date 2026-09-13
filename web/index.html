@@ -33,17 +33,34 @@
         <div class="controls">
           <button id="regular" aria-pressed="true">Play</button>
           <button id="stress" aria-pressed="false">Stress</button>
-          <button id="fps-toggle" aria-pressed="false">FPS</button>
+          <button id="fps-toggle" aria-pressed="true">FPS</button>
           <button id="pause">Pause</button>
           <button id="restart">Restart</button>
           <button id="pulse">Pulse</button>
-          <button id="close" aria-label="Close expanded view">Close ×</button>
+          <button
+            id="close"
+            aria-label="Close expanded view"
+            title="Close (Esc)"
+          >
+            <!-- Font Awesome Free 7.3.1 by Fonticons, Inc. — CC BY 4.0; see assets/fontawesome-LICENSE.txt -->
+            <svg
+              class="fa-icon"
+              viewBox="0 0 384 512"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                fill="currentColor"
+                d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
+              />
+            </svg>
+          </button>
         </div>
       </div>
       <div class="viewport">
         <div id="stage" class="stage">
           <div id="hud" class="hud"></div>
-          <div id="metrics" class="metrics" hidden></div>
+          <div id="metrics" class="metrics"></div>
           <div id="result" class="result" hidden>
             <p id="result-text"></p>
             <button id="again">Play again</button>

@@ -8,3 +8,5 @@ mkdir -p web/dist
   -sEXPORTED_RUNTIME_METHODS=HEAPF32 \
   -o web/dist/age.js
 cp web/index.html web/style.css web/app.js web/renderer.js web/dist/
+
+cp -R web/assets web/dist/

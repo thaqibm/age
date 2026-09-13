@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Albert Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("./assets/albert-sans-latin-300.woff2") format("woff2");
+}
 :root {
   color-scheme: light;
   color: #171717;
@@ -60,6 +67,8 @@ a:hover {
 .terminal:hover:enabled {
   background: #131820;
   border-color: #2596be;
+  color: #b5bdc7;
+  text-decoration: none;
 }
 .terminal-bar {
   display: flex;
@@ -88,31 +97,37 @@ canvas {
   margin: 12px 0 0;
 }
 button {
-  font: 11px monospace;
-  border: 1px solid #aaa;
+  font:
+    300 13px/1.6 "Albert Sans",
+    Arial,
+    sans-serif;
+  border: 0;
   border-radius: 0;
-  background: #fff;
-  color: #222;
+  background: transparent;
+  color: #2596be;
   min-height: 30px;
-  padding: 5px 9px;
+  padding: 4px 3px;
   cursor: pointer;
+  text-underline-offset: 4px;
 }
 button:hover:enabled {
-  background: #f2f2f2;
+  color: #ff6600;
+  text-decoration: underline;
 }
 button:disabled {
   cursor: default;
   opacity: 0.5;
 }
 button[aria-pressed="true"] {
-  border-color: #222;
-  background: #f2f2f2;
+  color: #171717;
+  text-decoration: underline;
 }
 button:focus-visible,
 a:focus-visible,
 canvas:focus-visible {
   outline: 2px solid #2596be;
-  outline-offset: 3px;
+  outline-offset: 5px;
+  border-radius: 2px;
 }
 [hidden] {
   display: none !important;
@@ -151,7 +166,7 @@ h2 {
 }
 .controls {
   display: flex;
-  gap: 6px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 .viewport {
@@ -240,5 +255,25 @@ h2 {
 @media (prefers-reduced-motion: reduce) {
   .terminal-bar span:last-child {
     color: #b5bdc7;
+  }
+}
+
+.fa-icon {
+  display: block;
+  width: 12px;
+  height: 16px;
+}
+#close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+}
+.result button {
+  color: #77d3cf;
+}
+@media (max-width: 650px) {
+  .controls {
+    gap: 10px;
   }
 }
