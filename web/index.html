@@ -12,7 +12,7 @@
     <script type="module" src="./app.js"></script>
   </head>
   <body>
-    <main>
+    <main id="gallery-page">
       <header>
         <h1>AGE: Ascii game engine</h1>
         <nav aria-label="Links">
@@ -27,7 +27,7 @@
       ></div>
       <p class="note" id="status" role="status">Loading…</p>
     </main>
-    <dialog id="viewer" aria-labelledby="name">
+    <section id="viewer" aria-labelledby="name" hidden>
       <div class="viewer-bar">
         <h2 id="name"></h2>
         <div class="controls">
@@ -75,6 +75,6 @@
         </div>
       </div>
       <p id="hint" class="note"></p>
-    </dialog>
+    </section>
   </body>
 </html>

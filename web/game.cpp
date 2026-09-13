@@ -80,6 +80,28 @@ void pack() {
     v[4] = b.r;
     v[5] = b.g;
     v[6] = b.b;
+    // Flat, discrete colors; no interpolated row or particle palettes.
+    constexpr float palette[][3] = {{.96f, .72f, .30f}, {.38f, .78f, .73f}, {.60f, .55f, .87f},
+                                    {.93f, .47f, .49f}, {.42f, .66f, .90f}, {.84f, .81f, .68f}};
+    if (b.kind == Brick || mode >= 3) {
+      int color = b.kind == Brick ? (int((b.y - 70) / 30) % 6) : int(i % 3);
+      if (mode == 4)
+        color += 3;
+      v[4] = palette[color][0];
+      v[5] = palette[color][1];
+      v[6] = palette[color][2];
+    }
+    if (b.kind == Enemy) {
+      v[4] = .93f;
+      v[5] = .47f;
+      v[6] = .49f;
+    }
+    if (b.kind == Ship || b.kind == Paddle) {
+      v[4] = .38f;
+      v[5] = .78f;
+      v[6] = .73f;
+    }
+
     v[7] = (b.kind == Ship ? 2
                            : (b.kind == Enemy ? 1 : (b.kind == Brick || b.kind == Paddle ? 3 : 0)));
     v[8] = b.angle;

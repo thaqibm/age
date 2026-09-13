@@ -3,25 +3,25 @@ const $ = (id) => document.getElementById(id);
 const definitions = [
   {
     name: "Swarm",
-    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L100",
+    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L122",
     mode: 0,
     hint: "WASD / arrows / drag to move · Space to pulse · P to pause · Esc to close",
   },
   {
     name: "Breakout",
-    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L220",
+    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L242",
     mode: 1,
     hint: "← → / A D / drag to move · P to pause · Esc to close",
   },
   {
     name: "Orbit",
-    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L334",
+    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L356",
     mode: 3,
     hint: "Drag to move the gravity center · P to pause · Esc to close",
   },
   {
     name: "Flow",
-    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L341",
+    source: "https://github.com/thaqibm/age/blob/main/web/game.cpp#L363",
     mode: 4,
     hint: "Drag to attract particles · P to pause · Esc to close",
   },
@@ -32,8 +32,7 @@ const scenes = [],
 let active = null,
   paused = false,
   stress = false,
-  showFPS = true,
-  ownedFullscreen = false;
+  showFPS = true;
 let pointer = false,
   px = 480,
   py = 300,
@@ -107,22 +106,11 @@ function open(scene) {
     .forEach((button) => (button.disabled = false));
   $("stage").prepend(scene.canvas);
   scene.canvas.tabIndex = 0;
-  $("viewer").showModal();
+  $("gallery-page").hidden = true;
+  $("viewer").hidden = false;
+  fitExpanded();
   document.body.style.overflow = "hidden";
   reset(false);
-  // Keep the viewport-filling dialog when native fullscreen is unavailable.
-  if (
-    !document.fullscreenElement &&
-    document.documentElement.requestFullscreen
-  ) {
-    document.documentElement
-      .requestFullscreen()
-      .then(() => {
-        if (active) ownedFullscreen = true;
-        else document.exitFullscreen().catch(() => {});
-      })
-      .catch(() => {});
-  }
 }
 function close() {
   if (!active) return;
@@ -136,14 +124,19 @@ function close() {
     scene.engine._game_init(scene.mode, 42);
     scene.accumulator = 0;
   }
-  $("viewer").close();
+  $("viewer").hidden = true;
+  $("gallery-page").hidden = false;
   document.body.style.overflow = "";
   scene.button.focus();
-  const exit = ownedFullscreen;
-  ownedFullscreen = false;
-  if (exit && document.fullscreenElement)
-    document.exitFullscreen().catch(() => {});
 }
+function fitExpanded() {
+  if (!active) return;
+  const viewport = document.querySelector(".viewport");
+  const width = Math.min(viewport.clientWidth, viewport.clientHeight * 1.6);
+  $("stage").style.width = `${width}px`;
+  $("stage").style.height = `${width / 1.6}px`;
+}
+new ResizeObserver(fitExpanded).observe(document.querySelector(".viewport"));
 function togglePause() {
   if (!active || active.failed || stats(active)[4]) return;
   paused = !paused;
@@ -157,13 +150,6 @@ function togglePause() {
   updateHUD();
 }
 $("close").onclick = close;
-$("viewer").addEventListener("cancel", (event) => {
-  event.preventDefault();
-  close();
-});
-document.addEventListener("fullscreenchange", () => {
-  if (ownedFullscreen && !document.fullscreenElement) close();
-});
 $("regular").onclick = () => reset(false);
 $("stress").onclick = () => reset(true);
 $("restart").onclick = () => reset(stress);

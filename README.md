@@ -47,18 +47,18 @@ compiler path.
 
 ### Where the code lives
 
-- [Swarm](web/game.cpp#L100) and [Breakout](web/game.cpp#L220): gameplay and collisions.
-- [Orbit](web/game.cpp#L334) and [Flow](web/game.cpp#L341): simulation updates.
-- [web/app.js](web/app.js): previews, fullscreen controls, input, and FPS display.
+- [Swarm](web/game.cpp#L122) and [Breakout](web/game.cpp#L242): gameplay and collisions.
+- [Orbit](web/game.cpp#L356) and [Flow](web/game.cpp#L363): simulation updates.
+- [web/app.js](web/app.js): previews, expanded controls, input, and FPS display.
 - [web/renderer.js](web/renderer.js): instanced WebGL renderer.
 - [src/AGE/core](src/AGE/core): shared C++ entity and component storage.
 - [scripts/build-web.sh](scripts/build-web.sh): C++ to WebAssembly build.
 
 ## Browser demo
 
-Live miniature terminals open into a fullscreen game or simulation. Click any preview;
+Live miniature terminals open into a expanded game or simulation. Click any preview;
 the expanded view has small Play/Run, Stress, FPS, Pause, and Close controls.
-Native fullscreen is used when supported, with a viewport-filling dialog fallback.
+The selected scene expands inside the page; browser fullscreen is never requested.
 
 Games and simulations use AGE's `EntityManager` and `componentDataArray<T>` core:
 
