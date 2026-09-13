@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AGE / Browser demo</title>
+    <title>AGE</title>
     <meta
       name="description"
       content="Two playable C++ games powered by AGE's entity-component core, compiled to WebAssembly."
@@ -18,127 +18,59 @@
   <body>
     <main>
       <header>
-        <a class="home" href="https://thaqibm.github.io/">← thaqib.dev</a>
-        <h1>AGE <span>/ Browser demo</span></h1>
-        <p>
-          A C++ entity-component engine. Two small games, running in
-          WebAssembly.
-        </p>
+        <h1>AGE</h1>
+        <nav aria-label="Links">
+          <a href="https://thaqibm.github.io/">Home</a
+          ><a href="https://github.com/thaqibm/age">Source</a>
+        </nav>
       </header>
-      <div class="layout">
-        <section aria-label="Game area">
-          <div class="toolbar">
-            <div class="games" aria-label="Choose game">
-              <button data-mode="0" aria-pressed="true" disabled>
-                01 / Swarm</button
-              ><button data-mode="1" aria-pressed="false" disabled>
-                02 / Breakout
-              </button>
-            </div>
-            <button id="pause" disabled>Pause</button
-            ><button id="restart" disabled>Restart</button>
-          </div>
-          <div class="stage">
-            <canvas
-              id="game"
-              width="960"
-              height="600"
-              tabindex="0"
-              aria-label="Game. Use WASD or arrow keys to move; Space activates a pulse in Swarm. Touch and drag to steer."
-            ></canvas>
-            <div class="hud">
-              <span id="score">SCORE 00000</span
-              ><span id="lives">HULL ● ● ● ● ●</span><span id="time">90s</span>
-            </div>
-            <div id="overlay">
-              <span class="eyebrow">01 / SURVIVAL</span>
-              <h2 id="title">Swarm</h2>
-              <p id="intro">
-                Keep moving. Your ship handles the shooting.<br />Survive for 90
-                seconds.
-              </p>
-              <button id="start" disabled>Loading WASM…</button
-              ><span class="hint" id="hint"
-                >WASD / arrows to steer · Space to pulse</span
-              >
-            </div>
-            <div class="bottom-hud">
-              <span id="wave">WAVE 01</span
-              ><span id="pulse-status">PULSE READY</span>
-            </div>
-          </div>
-          <div class="caption">
-            <span id="status" role="status">Loading engine…</span
-            ><span>C++ → WASM · WebGL 2</span>
-          </div>
-          <div class="metrics" aria-label="Live performance">
-            <div><strong id="fps">—</strong><span>frames / second</span></div>
-            <div>
-              <strong id="entities">—</strong><span>active entities</span>
-            </div>
-            <div>
-              <strong id="sim">—</strong><span>simulation ms / frame</span>
-            </div>
-            <div>
-              <strong id="render">—</strong><span>draw submit ms / frame</span>
-            </div>
-          </div>
-        </section>
-        <aside>
-          <h2 id="about-title">Outlast the swarm</h2>
-          <p id="about">
-            Dodge the coral drones while your ship fires at the nearest target.
-            A pulse clears nearby enemies, then recharges for five seconds.
-          </p>
-          <dl>
-            <div>
-              <dt>Move</dt>
-              <dd>WASD or arrow keys.<br />Touch and drag on the field.</dd>
-            </div>
-            <div>
-              <dt>Pulse</dt>
-              <dd>Space, or the button below.</dd>
-            </div>
-            <div>
-              <dt>Pause</dt>
-              <dd>P or Escape.</dd>
-            </div>
-            <div>
-              <dt>Restart</dt>
-              <dd>R for a fresh run.</dd>
-            </div>
-          </dl>
-          <button id="pulse" disabled>Activate pulse <span>Space</span></button>
-          <hr />
-          <h2>Inside the demo</h2>
-          <p>
-            The games use AGE’s C++ entity IDs and packed component arrays.
-            Movement, collision, scoring, and particles run in WebAssembly.
-          </p>
-          <p>
-            A new browser renderer draws the scene in one instanced WebGL call.
-            The original terminal games remain in the repository.
-          </p>
-          <hr />
-          <h2>Push the engine</h2>
-          <p>
-            Start with 2,000 drones and keep adding more. Invulnerable ship; no
-            time limit. Up to 5,000 entities.
-          </p>
-          <button id="stress" disabled>Run swarm stress test</button>
-          <p class="note">
-            Timings are measured on your device. Draw time measures CPU
-            submission, not GPU completion.
-          </p>
-          <a class="source" href="https://github.com/thaqibm/age"
-            >Source on GitHub ↗</a
-          >
-        </aside>
+      <div class="controls" aria-label="Game controls">
+        <button data-mode="0" aria-pressed="true" disabled>Swarm</button>
+        <button data-mode="1" aria-pressed="false" disabled>Breakout</button>
+        <button id="stress" disabled>Stress test</button>
+        <span class="spacer"></span>
+        <button id="pause" disabled>Pause</button>
+        <button id="restart" disabled>Restart</button>
+        <button id="pulse" disabled>Pulse</button>
       </div>
-      <footer>
-        <span>AGE Engine / Thaqib Mohammed</span
-        ><span>No install. No server. Just your browser.</span>
-      </footer>
+      <p id="hint">
+        WASD / arrows / drag to move · Space to pulse · P to pause · R to
+        restart
+      </p>
+      <div class="stage">
+        <canvas
+          id="game"
+          width="960"
+          height="600"
+          tabindex="0"
+          aria-label="Game. Use WASD or arrow keys to move; Space activates a pulse in Swarm. Touch and drag to steer."
+        ></canvas>
+        <div class="hud">
+          <span id="score">SCORE 00000</span
+          ><span id="lives">HULL ● ● ● ● ●</span><span id="time">90s</span>
+        </div>
+        <div id="overlay">
+          <h2 id="title">Swarm</h2>
+          <p id="intro">Survive 90 seconds. Auto-fire.</p>
+          <button id="start" disabled>Loading…</button>
+        </div>
+        <div class="bottom-hud">
+          <span id="wave">WAVE 01</span
+          ><span id="pulse-status">PULSE READY</span>
+        </div>
+      </div>
+      <div class="metrics" aria-label="Live performance">
+        <span><span id="fps">—</span> fps</span>
+        <span><span id="entities">—</span> entities</span>
+        <span title="Simulation CPU time per frame"
+          ><span id="sim">—</span> ms sim</span
+        >
+        <span title="CPU draw submission time per frame, not GPU completion"
+          ><span id="render">—</span> ms draw</span
+        >
+      </div>
+      <p class="note">Browser demo · C++ / WebAssembly</p>
+      <p id="status" class="sr-only" role="status">Loading…</p>
     </main>
   </body>
 </html>

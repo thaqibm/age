@@ -21,9 +21,9 @@ let frameCount = 0,
   renderSum = 0;
 const titles = ["Swarm", "Breakout", "Swarm / stress test"];
 const intros = [
-  "Keep moving. Your ship handles the shooting.\nSurvive for 90 seconds.",
-  "Clear all 72 bricks. You have three balls.\nCatch the ball near a paddle edge to change its angle.",
-  "2,000 drones to start. More arrive every second.\nInvulnerable ship. No time limit.",
+  "Survive 90 seconds. Auto-fire.",
+  "Clear 72 bricks. Three lives.",
+  "2,000 drones. Invulnerable. No time limit.",
 ];
 function makeRenderer() {
   gl = canvas.getContext("webgl2", {
@@ -151,24 +151,12 @@ function select(selected) {
   $("overlay").hidden = false;
   $("title").textContent = titles[mode];
   $("intro").innerText = intros[mode];
-  document.querySelector(".eyebrow").textContent =
-    mode === 1
-      ? "02 / ARCADE"
-      : mode === 2
-        ? "PERFORMANCE / SANDBOX"
-        : "01 / SURVIVAL";
-  $("start").textContent =
-    "Play " + (mode === 1 ? "Breakout" : mode === 2 ? "stress test" : "Swarm");
+  $("start").textContent = "Play";
   $("hint").textContent =
     mode === 1
-      ? "← → / A D or drag to move the paddle"
-      : "WASD / arrows to steer · Space to pulse";
-  $("about-title").textContent =
-    mode === 1 ? "Clear the field" : "Outlast the swarm";
-  $("about").textContent =
-    mode === 1
-      ? "Keep the ball in play and clear all 72 bricks. The ball speeds up with each paddle return. Hitting near an edge sends it sideways."
-      : "Dodge the coral drones while your ship fires at the nearest target. A pulse clears nearby enemies, then recharges for five seconds.";
+      ? "← → / A D / drag to move · P to pause · R to restart"
+      : "WASD / arrows / drag to move · Space to pulse · P to pause · R to restart";
+  $("pulse").hidden = mode === 1;
   $("pause").disabled = true;
   $("pause").textContent = "Pause";
   $("restart").disabled = false;
@@ -213,7 +201,7 @@ function togglePause() {
   $("overlay").hidden = !paused;
   if (paused) {
     $("title").textContent = "Paused";
-    $("intro").textContent = "Take your time.";
+    $("intro").textContent = "";
     $("start").textContent = "Resume";
     $("status").textContent = "Paused.";
   } else {
